@@ -1,0 +1,35 @@
+{
+  "name": "backend",
+  "version": "1.0.0",
+  "description": "HOSIS Front Office REST API",
+  "main": "src/server.js",
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "nodemon --watch . --watch ../departments --ignore \"../departments/**/frontend/**\" --ignore \"../departments/**/public/**\" src/server.js",
+    "db:seed-demo": "node scripts/seedDemo.js",
+    "accounts:reset": "node scripts/resetAccounts.js",
+    "db:migrate": "node scripts/migrate.js",
+    "db:test": "node scripts/testConnection.js",
+    "user:create": "node scripts/createFrontOfficeUser.js",
+    "test": "node --test",
+    "user:sync-front-office": "node scripts/syncFrontOfficeUser.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "dependencies": {
+    "bcrypt": "^6.0.0",
+    "cors": "^2.8.6",
+    "dotenv": "^17.4.2",
+    "express": "^5.2.1",
+    "jsonwebtoken": "^9.0.3",
+    "pg": "^8.23.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.14"
+  },
+  "overrides": {
+    "minimatch": "^11.0.1"
+  }
+}
