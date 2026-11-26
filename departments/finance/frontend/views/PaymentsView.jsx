@@ -22,7 +22,7 @@ export default function PaymentsView({ user, showToast, autoSyncTick = 0 }) {
   const [paymentOption, setPaymentOption] = useState('full') // 'full' | 'half' | 'custom'
   const [payAmount, setPayAmount] = useState('0')
   const [payDate, setPayDate] = useState(new Date().toISOString().slice(0, 10))
-  const [payMethod, setPayMethod] = useState('Card')
+  const [payMethod, setPayMethod] = useState('Cash')
   const [payReference, setPayReference] = useState('')
   const [payNotes, setPayNotes] = useState('Customer invoice settlement')
   const [submitting, setSubmitting] = useState(false)
@@ -556,14 +556,7 @@ export default function PaymentsView({ user, showToast, autoSyncTick = 0 }) {
                     value={payMethod}
                     onChange={(e) => setPayMethod(e.target.value)}
                   >
-                    <option value="Card">Credit/Debit Card</option>
-                    <option value="Cash">Cash</option>
-                    <option value="Bank transfer">Bank Transfer</option>
-                    <option value="GCash">GCash E-Wallet</option>
-                    <option value="Maya">Maya E-Wallet</option>
-                    <option value="Other E-Wallets">Other E-Wallets</option>
-                    <option value="Check">Check</option>
-                    <option value="Salary deduction">Salary Deduction</option>
+                    <option value="Cash">Cash (Cash Only)</option>
                   </select>
                 </div>
                 <div>

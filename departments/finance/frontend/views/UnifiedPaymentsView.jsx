@@ -199,7 +199,7 @@ function FinancePaymentsTab({ user, showToast, autoSyncTick }) {
                 <div>
                   <label style={{ display: 'block', fontSize: 12, fontWeight: 600, marginBottom: 4 }}>Method *</label>
                   <select className="select-filter" style={{ width: '100%' }} value={payMethod} onChange={e => setPayMethod(e.target.value)}>
-                    {['CASH', 'CARD', 'GCASH', 'MAYA', 'BANK_TRANSFER', 'CHECK'].map(m => <option key={m}>{m}</option>)}
+                    <option value="CASH">CASH (Cash Only)</option>
                   </select>
                 </div>
               </div>

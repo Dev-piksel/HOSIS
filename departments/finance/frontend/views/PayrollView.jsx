@@ -155,7 +155,7 @@ export default function PayrollView({ user, showToast, autoSyncTick = 0 }) {
   async function handleDisburse(employee) {
     try {
       await financeApi.disbursePayroll(employee.dbId)
-      showToast(`Wages of ₱${employee.netPayable.toLocaleString()} disbursed to ${employee.name}.`)
+      showToast(`Wages of ₱${employee.netPayable.toLocaleString()} disbursed in CASH to ${employee.name}.`)
       loadPayroll()
       if (selectedEmp && selectedEmp.dbId === employee.dbId) {
         setSelectedEmp((prev) => ({ ...prev, status: 'DISBURSED', disbursedAt: new Date().toISOString() }))
@@ -461,9 +461,9 @@ export default function PayrollView({ user, showToast, autoSyncTick = 0 }) {
                         className="fin-btn fin-btn-secondary"
                         style={{ padding: '4px 10px', fontSize: '12px' }}
                         onClick={() => handleDisburse(emp)}
-                        title="Checker Action: Approve and disburse payroll"
+                        title="Checker Action: Approve and disburse payroll in cash"
                       >
-                        Disburse
+                        Disburse (Cash)
                       </button>
                     ) : (
                       <span className="fin-badge fin-badge-gold" style={{ fontSize: '11px' }}>
@@ -575,7 +575,7 @@ export default function PayrollView({ user, showToast, autoSyncTick = 0 }) {
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', background: 'rgba(34, 197, 94, 0.1)', border: '1px solid #22c55e', padding: '12px 18px', borderRadius: '8px' }}>
                   <div>
                     <span style={{ fontSize: '12px', color: '#86efac', fontWeight: 600 }}>NET TAKE-HOME COMPENSATION</span>
-                    <div style={{ fontSize: '11px', color: '#94a3b8' }}>Direct Bank Deposit / Corporate Cash Disbursement</div>
+                    <div style={{ fontSize: '11px', color: '#86efac', fontWeight: 600 }}>Disbursement Mode: CASH ONLY (Corporate Cash Payout)</div>
                   </div>
                   <div style={{ fontSize: '24px', fontWeight: 800, color: '#22c55e' }}>
                     ₱{selectedEmp.netPayable.toLocaleString('en-US', { minimumFractionDigits: 2 })}
@@ -610,7 +610,7 @@ export default function PayrollView({ user, showToast, autoSyncTick = 0 }) {
                     className="fin-btn fin-btn-primary"
                     onClick={() => handleDisburse(selectedEmp)}
                   >
-                    Confirm &amp; Disburse Wage
+                    Confirm &amp; Disburse Wage (Cash)
                   </button>
                 ) : (
                   <span style={{ fontSize: '11.5px', color: '#64748b', fontStyle: 'italic', marginRight: 'auto' }}>

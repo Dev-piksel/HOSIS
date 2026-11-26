@@ -1554,7 +1554,7 @@ export function Modal({ modal, selectedRecord, guests, rooms, reservations, onCl
             <label htmlFor="payment-amount">Payment amount</label>
             <input id="payment-amount" name="amount" type="number" min="0.01" max={(selectedRecord.rawAmount - selectedRecord.paidAmount).toFixed(2)} step="0.01" defaultValue={(selectedRecord.rawAmount - selectedRecord.paidAmount).toFixed(2)} required />
             <div className="form-row">
-              <div><label htmlFor="payment-method">Payment method</label><select id="payment-method" name="paymentMethod"><option value="CARD">Card</option><option value="CASH">Cash</option><option value="BANK_TRANSFER">Bank transfer</option><option value="OTHER">Other</option></select></div>
+              <div><label htmlFor="payment-method">Payment method</label><select id="payment-method" name="paymentMethod"><option value="CASH">Cash Only</option></select></div>
               <div><label htmlFor="payment-reference">Reference (optional)</label><input id="payment-reference" name="reference" placeholder="Receipt or transaction ID" /></div>
             </div>
           </>}

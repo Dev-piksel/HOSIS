@@ -58,7 +58,7 @@ export default function FinanceApp({ onSignOut }) {
       {selected && <form onSubmit={recordPayment}>
         <h3>Record payment for {selected.invoice_number}</h3>
         <label>Amount <input name="amount" type="number" min="0.01" step="0.01" max={(Number(selected.amount) - Number(selected.paid)).toFixed(2)} required /></label>
-        <label>Method <select name="method"><option value="CASH">Cash</option><option value="CARD">Card</option><option value="BANK_TRANSFER">Bank transfer</option><option value="OTHER">Other</option></select></label>
+        <label>Method <select name="method"><option value="CASH">Cash Only</option></select></label>
         <button className="small-action" disabled={saving}>Save payment</button>
         <button type="button" className="small-action" disabled={saving} onClick={() => setSelected(null)}>Cancel</button>
       </form>}
