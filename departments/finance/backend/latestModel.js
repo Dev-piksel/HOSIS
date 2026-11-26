@@ -1956,6 +1956,32 @@ async function listSubsystemDtr({ department, search, date } = {}) {
   return rows
 }
 
+async function createBudgetRequest(data, userId, userName) {
+  const { department, category, title, purpose, requestedAmount, fiscalPeriod, priority, roomNumber } = data
+  if (!department || !category || !title || !purpose || !requestedAmount || !fiscalPeriod) {
+    throw appError(400, 'MISSING_FIELDS', 'Department, category, title, purpose, amount, and fiscal period are required.')
+  }
+  const amount = Number(requestedAmount)
+  if (!Number.isFinite(amount) || amount <= 0) throw appError(400, 'INVALID_AMOUNT', 'Requested amount must be positive.')
+
+  return transaction(async (client) => {
+    const seqCode = await nextCode(client, 'seq_finance_expense_num', 'BGR', 4)
+    const deptSlug = department.replace(/[^A-Za-z]/g, '').slice(0, 4).toUpperCase() || 'DEPT'
+    const year = new Date().getFullYear()
+    const reqCode = `BGR-${deptSlug}-${year}-${seqCode.split('-').pop()}`
+    const { rows: [row] } = await client.query(`
+      INSERT INTO finance_budget_requests
+        (request_code, department, category, title, purpose, requested_amount,
+         fiscal_period, status, priority, requested_by, requested_at, room_number)
+      VALUES ($1, $2, $3, $4, $5, $6, $7, 'PENDING_REVIEW', COALESCE($8, 'MEDIUM'), $9, NOW(), $10)
+      RETURNING id, request_code AS "requestCode", department, category, title, purpose,
+        requested_amount AS "requestedAmount", fiscal_period AS "fiscalPeriod",
+        status, priority, requested_by AS "requestedBy", requested_at AS "requestedAt", room_number AS "roomNumber"
+    `, [reqCode, department, category, title, purpose, amount, fiscalPeriod, priority || null, userName, roomNumber || null])
+    return row
+  })
+}
+
 async function listSubsystemBudgetRequests({ department, status, category, search } = {}) {
   const conditions = []
   const params = []

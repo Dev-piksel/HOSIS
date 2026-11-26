@@ -1,7 +1,7 @@
 import { useCallback, useState, useEffect } from 'react'
 import OverviewView from './views/OverviewView'
 import InvoicesView from './views/InvoicesView'
-import PaymentsView from './views/PaymentsView'
+import UnifiedPaymentsView from './views/UnifiedPaymentsView'
 import ExpensesView from './views/ExpensesView'
 import RevenueView from './views/RevenueView'
 import PayrollView from './views/PayrollView'
@@ -10,12 +10,10 @@ import useHotelToday from '../../../frontend/src/useHotelToday.js'
 import StaffLeavePage from '../../front-office/frontend/StaffLeavePage.jsx'
 import LeaveRequestsView from './views/LeaveRequestsView'
 import ReportsView from './views/ReportsView'
-import IntegrationsView from './views/IntegrationsView'
 import HistoryView from './views/HistoryView'
-import MasterDispatchModal from './views/MasterDispatchModal'
-import CustomerPayments from './views/CustomerPayments.jsx'
-import FinanceApp from './FinanceApp.jsx'
-import SubsystemHubView from './views/SubsystemHubView.jsx'
+import BudgetRequestsView from './views/BudgetRequestsView.jsx'
+import RequestsComplaintsView from './views/RequestsComplaintsView.jsx'
+import MasterDispatchModal from './views/MasterDispatchModal.jsx'
 
 function Icon({ name, size = 18, className = '' }) {
   const common = { fill: 'none', stroke: 'currentColor', strokeWidth: 1.8, strokeLinecap: 'round', strokeLinejoin: 'round' }
@@ -183,16 +181,15 @@ export default function FinanceDashboard({ user, onOpenAdmin, onOpenFrontOffice,
 
   const allFinancialTasks = [
     { id: 'overview', label: 'Dashboard', iconName: 'grid' },
-    { id: 'invoices', label: 'Invoices', iconName: 'receipt' },
-    { id: 'shared', label: 'Shared ledger', iconName: 'link' },
-    { id: 'subsystems', label: 'Subsystem Hub', iconName: 'hub' },
     { id: 'payments', label: 'Payments', iconName: 'credit' },
+    { id: 'budget', label: 'Budget Requests', iconName: 'bell' },
+    { id: 'complaints', label: 'Requests & Complaints', iconName: 'sparkle' },
+    { id: 'invoices', label: 'Invoices', iconName: 'receipt' },
     { id: 'expenses', label: 'Expenses', iconName: 'arrow' },
     { id: 'payroll', label: 'Payroll', iconName: 'users' },
-    { id: 'leave', label: 'Leave Requests', iconName: 'calendar' },
-    { id: 'reports', label: 'Financial Reports', iconName: 'file' },
+    { id: 'leave', label: 'Leave', iconName: 'calendar' },
     { id: 'revenue', label: 'Revenue', iconName: 'bed' },
-    { id: 'integrations', label: 'Integrations', iconName: 'link', checkerOnly: true },
+    { id: 'reports', label: 'Reports', iconName: 'file' },
     { id: 'history', label: 'Audit Trail', iconName: 'eye', checkerOnly: true },
   ]
 
@@ -384,10 +381,16 @@ export default function FinanceDashboard({ user, onOpenAdmin, onOpenFrontOffice,
             <InvoicesView user={user} showToast={showToast} autoSyncTick={autoSyncTick} />
           )}
 
-          {activeTab === 'shared' && <><FinanceApp /><CustomerPayments /></>}
-
           {activeTab === 'payments' && (
-            <PaymentsView user={user} showToast={showToast} autoSyncTick={autoSyncTick} />
+            <UnifiedPaymentsView user={user} showToast={showToast} autoSyncTick={autoSyncTick} />
+          )}
+
+          {activeTab === 'budget' && (
+            <BudgetRequestsView user={user} showToast={showToast} />
+          )}
+
+          {activeTab === 'complaints' && (
+            <RequestsComplaintsView user={user} showToast={showToast} />
           )}
 
           {activeTab === 'expenses' && (
@@ -414,14 +417,6 @@ export default function FinanceDashboard({ user, onOpenAdmin, onOpenFrontOffice,
               showToast={showToast}
               autoSyncTick={autoSyncTick}
             />
-          )}
-
-          {activeTab === 'subsystems' && (
-            <SubsystemHubView user={user} showToast={showToast} autoSyncTick={autoSyncTick} />
-          )}
-
-          {activeTab === 'integrations' && (
-            <IntegrationsView user={user} showToast={showToast} />
           )}
 
           {activeTab === 'history' && (

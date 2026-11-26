@@ -65,6 +65,7 @@ export const financeApi = {
   subsystemSummary: () => get('subsystem-hub/summary'),
   subsystemDtr: (filters) => get('subsystem-hub/dtr', filters),
   subsystemBudgetRequests: (filters) => get('subsystem-hub/budget-requests', filters),
+  createBudgetRequest: (body) => send('POST', 'subsystem-hub/budget-requests', body),
   decideBudgetRequest: (id, body) => send('PATCH', 'subsystem-hub/budget-requests/' + id + '/decision', body),
   subsystemGuestPayments: (filters) => get('subsystem-hub/guest-payments', filters),
   subsystemPayroll: (filters) => get('subsystem-hub/payroll', filters),

@@ -179,6 +179,10 @@ async function listSubsystemDamages(filters) {
   return model.listSubsystemDamages(filters)
 }
 
+async function createBudgetRequest(body, userId, userName) {
+  return model.createBudgetRequest(body, userId, userName)
+}
+
 module.exports = {
   voidInvoice: model.voidInvoice,
   settleExpense: model.settleExpense,
@@ -219,4 +223,5 @@ module.exports = {
   listSubsystemGuestPayments,
   listSubsystemPayrollMatrix,
   listSubsystemDamages,
+  createBudgetRequest,
 }

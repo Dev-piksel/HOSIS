@@ -101,4 +101,5 @@ module.exports = {
     status: req.query.status,
     search: req.query.search,
   })),
+  createBudgetRequest: controller((req) => service.createBudgetRequest(req.body, userId(req), userName(req)), 201),
 }
