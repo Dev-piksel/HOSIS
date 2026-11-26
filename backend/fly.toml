@@ -6,6 +6,12 @@
 app = 'hosis'
 primary_region = 'iad'
 
+[env]
+  PORT = '8080'
+  API_HOST = '0.0.0.0'
+  NODE_ENV = 'production'
+  DB_TIME_ZONE = 'Asia/Manila'
+
 [build]
 [http_service]
   internal_port = 8080
