@@ -20,18 +20,23 @@ app.use((req, res, next) => {
   res.set('Referrer-Policy', 'no-referrer')
   res.set('Permissions-Policy', 'geolocation=(), microphone=(), payment=(), usb=()')
   res.set('Cross-Origin-Opener-Policy', 'same-origin')
-  res.set('Cross-Origin-Resource-Policy', 'same-origin')
+  res.set('Cross-Origin-Resource-Policy', 'cross-origin')
   if (req.secure) res.set('Strict-Transport-Security', 'max-age=31536000')
   next()
 })
 app.use(cors({
   origin(origin, callback) {
     if (!origin || origin === renderOrigin || env.frontendOrigins.includes(origin)) return callback(null, true)
+    try {
+      const url = new URL(origin)
+      if (url.hostname.endsWith('.vercel.app')) return callback(null, true)
+    } catch {}
     const error = new Error('Origin is not allowed by CORS.')
     error.status = 403
     error.codeName = 'CORS_ORIGIN_DENIED'
     return callback(error)
   },
+  credentials: true,
 }))
 const standardJson = express.json({ limit: '3mb' })
 app.use((req, res, next) => {

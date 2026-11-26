@@ -2083,8 +2083,12 @@ async function listSubsystemGuestPayments({ search, method, date } = {}) {
   let index = 1
 
   if (method && method !== 'All') {
-    conditions.push(`p.payment_method = $${index++}`)
-    params.push(method.toUpperCase())
+    if (method.toUpperCase() === 'OTHER' || method.toUpperCase() === 'GCASH' || method.toUpperCase() === 'MAYA') {
+      conditions.push(`(p.payment_method = 'OTHER' OR p.payment_method IN ('GCASH', 'MAYA') OR p.reference ILIKE '%GCASH%' OR p.reference ILIKE '%MAYA%')`)
+    } else {
+      conditions.push(`p.payment_method = $${index++}`)
+      params.push(method.toUpperCase())
+    }
   }
   if (date) {
     conditions.push(`p.paid_at::date = $${index++}`)

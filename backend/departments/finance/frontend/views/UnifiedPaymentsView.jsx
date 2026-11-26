@@ -14,17 +14,21 @@ function formatDateTime(val) {
   })
 }
 
-function MethodBadge({ method }) {
+function MethodBadge({ method, reference }) {
   const m = (method || '').replace(/_/g, ' ')
+  const isEwallet = /gcash|maya|e-wallet|ewallet/i.test(m) || /gcash|maya/i.test(reference || '')
   const c =
     /cash/i.test(m) ? { bg: '#f0fdf4', color: '#16a34a' } :
     /card/i.test(m) ? { bg: '#eff6ff', color: '#1d4ed8' } :
-    /gcash|maya|e-wallet|ewallet/i.test(m) ? { bg: '#faf5ff', color: '#7c3aed' } :
+    isEwallet ? { bg: '#faf5ff', color: '#7c3aed' } :
     /transfer|bank/i.test(m) ? { bg: '#fff7ed', color: '#c2410c' } :
     { bg: '#f1f5f9', color: '#475569' }
+  const label = m === 'OTHER' && /gcash/i.test(reference || '') ? 'OTHER (GCASH)' :
+                m === 'OTHER' && /maya/i.test(reference || '') ? 'OTHER (MAYA)' :
+                m === 'OTHER' ? 'OTHER PAYMENTS' : (m || '—')
   return (
     <span style={{ padding: '2px 9px', borderRadius: 999, fontSize: 11, fontWeight: 700, background: c.bg, color: c.color }}>
-      {m || '—'}
+      {label}
     </span>
   )
 }
@@ -147,7 +151,7 @@ function FinancePaymentsTab({ user, showToast, autoSyncTick }) {
                     <td><code style={{ fontSize: 11 }}>{p.invoiceCode || '—'}</code></td>
                     <td>{p.guestName || '—'}</td>
                     <td>{p.roomNumber || '—'}</td>
-                    <td><MethodBadge method={p.paymentMethod} /></td>
+                    <td><MethodBadge method={p.paymentMethod} reference={p.reference} /></td>
                     <td style={{ fontWeight: 700, color: '#16a34a' }}>{formatPHP(p.amount)}</td>
                     <td style={{ fontSize: 12, color: '#64748b' }}>{p.reference || '—'}</td>
                     <td style={{ fontSize: 12, color: '#64748b' }}>{formatDateTime(p.paidAt)}</td>
@@ -251,7 +255,12 @@ function GuestPaymentsTab({ autoSyncTick }) {
         <input className="search-box" placeholder="Search guest name, room, invoice…" value={search}
           onChange={e => setSearch(e.target.value)} onKeyDown={e => e.key === 'Enter' && load()} style={{ flex: '1 1 200px' }} />
         <select className="select-filter" value={method} onChange={e => setMethod(e.target.value)}>
-          {['All', 'CASH', 'CARD', 'GCASH', 'MAYA', 'BANK_TRANSFER', 'CHECK'].map(m => <option key={m}>{m}</option>)}
+          <option value="All">All</option>
+          <option value="CASH">CASH</option>
+          <option value="CARD">CARD</option>
+          <option value="BANK_TRANSFER">BANK_TRANSFER</option>
+          <option value="OTHER">OTHER PAYMENTS (GCash, Maya)</option>
+          <option value="CHECK">CHECK</option>
         </select>
         <button className="button button-secondary" onClick={() => load()}>Refresh</button>
       </div>
@@ -286,7 +295,7 @@ function GuestPaymentsTab({ autoSyncTick }) {
                     <td><code style={{ fontSize: 11 }}>{p.reservationCode || '—'}</code></td>
                     <td><code style={{ fontSize: 11 }}>{p.invoiceNumber || '—'}</code></td>
                     <td><StatusBadge status={p.invoiceStatus} /></td>
-                    <td><MethodBadge method={p.paymentMethod} /></td>
+                    <td><MethodBadge method={p.paymentMethod} reference={p.reference} /></td>
                     <td style={{ fontWeight: 700, color: '#16a34a' }}>{formatPHP(p.amount)}</td>
                     <td style={{ fontSize: 12, color: '#64748b' }}>{p.reference || '—'}</td>
                     <td style={{ fontSize: 12, color: '#64748b' }}>{formatDateTime(p.paidAt)}</td>

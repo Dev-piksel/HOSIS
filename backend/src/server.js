@@ -12,8 +12,9 @@ const listener = HOSIS_TLS_CERT ? https.createServer({
   cert: readFileSync(HOSIS_TLS_CERT),
   key: readFileSync(HOSIS_TLS_KEY),
 }, app) : app
-const server = listener.listen(env.port, process.env.API_HOST || '127.0.0.1', () => {
-  console.log(`HOSIS API listening on port ${env.port}`)
+const host = process.env.API_HOST || (process.env.NODE_ENV === 'production' ? '0.0.0.0' : '127.0.0.1')
+const server = listener.listen(env.port, host, () => {
+  console.log(`HOSIS API listening on ${host}:${env.port}`)
 })
 
 let shuttingDown = false
