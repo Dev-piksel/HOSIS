@@ -1,0 +1,24 @@
+app = 'hosis'
+primary_region = 'iad'
+
+[env]
+  PORT = '8080'
+  API_HOST = '0.0.0.0'
+  NODE_ENV = 'production'
+  DB_TIME_ZONE = 'Asia/Manila'
+
+[build]
+  dockerfile = "Dockerfile"
+
+[http_service]
+  internal_port = 8080
+  force_https = true
+  auto_stop_machines = 'stop'
+  auto_start_machines = true
+  min_machines_running = 0
+  processes = ['app']
+
+[[vm]]
+  memory = '256mb'
+  cpu_kind = 'shared'
+  cpus = 1
